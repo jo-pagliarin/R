@@ -167,3 +167,51 @@ a
 # ACESSANDO ELEMENTOS DE UMA LISTA [[i]]7
 a[[3]] #corresponde a y
 
+# MANEJO DE DADOS
+# para verificar o tipo de cada objeto usamos a função class()
+a <- 5
+class(a) #retorna numeric
+is.integer(a) #retorna FALSE
+is.double(a) #retorna TRUE
+is.character(a) #retorna FALSE
+is.numeric(a) #retorna TRUE
+
+x <- c(15L, 36L) #o L faz o número retornar inteiro (ocupa menos espaço de memória)
+x
+class(x) #retorna integer
+
+#conversão de tipos de variáveis
+age <- 20
+pwd <- "FALSE" #tudo entre aspas equivale a caractere
+pwd
+class(pwd)
+as.logical(age) #retorna TRUE pq age != 0
+b = as.logical(pwd) #retorna FALSE sem aspas
+b
+as.numeric(b) #retorna 0 porque b corresponde a FALSE
+
+#VETORES FALTANTES
+data("ToothGrowth")
+data_ToothGrowth <- ToothGrowth
+rm(ToothGrowth)
+class(data_ToothGrowth)
+summary(data_ToothGrowth)
+str(data_ToothGrowth)
+names(data_ToothGrowth)
+is.na(data_ToothGrowth)
+complete.cases(data_ToothGrowth$len)
+View(data_ToothGrowth)
+
+metadados_pac <- data.frame(
+  paciente = c("Joana", "Rafael", "Eduardo", "Matheus", "Luiz", "Guilherme"),
+  idade = c("20", "23", "25", "22", "26", "19"),
+  sexo = c("feminino", "masculino", "masculino", "masculino", "masculino", "masculino"),
+  fumante = c(NA,TRUE, TRUE, TRUE, FALSE, FALSE)
+)
+metadados_pac
+
+is.na(metadados_pac$fumante) #retorna TRUE para o primeiro campo, porque este está vazio
+complete.cases(metadados_pac$fumante) #retorna FALSO para o primeiro campo, porque não está completo
+
+metadados_pac$fumante[is.na(metadados_pac$fumante)] <- "Não informado" #após esse comando, todos os campos estão completos
+
