@@ -273,3 +273,39 @@ library(readxl)
 input_xlsx <- readxl::read_xlsx("Connect .xlsx")
 dir()
 
+metadados_pac <- data.frame(
+  paciente = c("Joana", "Rafael", "Eduardo", "Matheus", "Luiz", "Guilherme"),
+  idade = c("20", "23", "25", "22", "26", "19"),
+  sexo = c("feminino", "masculino", "masculino", "masculino", "masculino", "masculino"),
+  fumante = c(NA,TRUE, TRUE, TRUE, FALSE, FALSE)
+)
+metadados_pac
+
+#EXPORTAÇAO DE ARQUIVOS DO AMBIENTE R PARA ALGUM DIRETÓRIO DO MEU PC
+install.packages("rio")
+library("rio")
+export(metadados_pac, file = "metadados_pac.csv")
+getwd()
+dir()
+
+#EXPORTANDO PARA UMA PLANILHA EXISTENTE "TESTE.XLSX"
+export(metadados_pac, file = "teste.xlsx", which = "dados")
+#dados é o nome da "aba" da planilha
+#assim é possível adicionar dados em uma planilha existente,
+#alternando somente a aba
+
+
+numeros <- data.frame(
+  primos = c(1,2,3,5,7,9,13),
+  pares = c(2,4,6,8,10,12,14),
+  ímpares = c(1,3,5,7,9,11,13)
+)
+
+export(numeros, file = "teste.xlsx", which = "NOVA")
+#a aba "NOVA" será criada
+#não dá certo exportar dados para uma aba existente
+
+
+
+
+
