@@ -215,3 +215,61 @@ complete.cases(metadados_pac$fumante) #retorna FALSO para o primeiro campo, porq
 
 metadados_pac$fumante[is.na(metadados_pac$fumante)] <- "Não informado" #após esse comando, todos os campos estão completos
 
+# DIRETÓRIO DE TRABALHO
+getwd() #verifica diretorio ==> retorno "C:/Users/Joana/Documents"
+setwd("/Users/Joana/Desktop/Repositórios") #importando arquivos para o R desta pasta
+dir() #verifica se estou na pasta certa; retorna as pastas q tem dentro da pasta "Repositórios"
+
+#IMPORTAÇÃO DE ARQUIVOS C para o ambiente R
+setwd("/Users/Joana/Desktop/Repositórios/repositorio-C")
+dir()
+setwd("/Users/Joana/Desktop/Repositórios/repositorio-C/4. Vetores")
+dir()
+setwd("/Users/Joana/Desktop/Repositórios/repositorio-C/4. Vetores/ex_04")
+input_C_4_4 <- read.table(file = "main.c", header = F, sep = "|")
+input_C_4_4
+#O argumento header=TRUE informa que os dados possuem cabeçalho, ou seja, a primeira linha
+#contém os nomes dos atributos (variáveis) e a primeira coluna possui o nome das amostras.
+
+
+#PARA EXTENSÃO .CSV HÁ UM ATALHO
+setwd("/Users/Joana/Desktop")
+input_csv <- read.csv("Lógica proposicional.csv")
+input_csv2 <- read.csv("Cópia de Connect  - Página1.csv") 
+# posso excluir os arquivos do computador e os dados irão continuar no RStudio
+
+#IMPORTANDO QUALQUER ARQUIVO QUE NÃO SEJA COMPACTADO
+install.packages("rio", dependencies = TRUE)
+library(rio)
+input_txt <- import(file = "teste.txt")
+
+#IMPORTANDO ARQUIVO COMPACTADO
+#não consegui importar .RAR, apenas .ZIP
+install.packages("readr")
+library(readr)
+dir()
+input_zip <- read_delim("Arquivo.zip", delim = ";")
+
+#IMPORTANDO APENAS PARTE DE UM ARQUIVO
+library("data.table")
+install.packages("read.table")
+library("read.table")
+#arquivo inteiro
+input_arquivo_csv <- read.table("arquivo.csv", header = TRUE, sep = ",",
+                       colClasses = c("character", "character", "character",
+                                      "numeric", "numeric"))
+
+
+#nao imprime as colunas marcadas com NULL
+input_arquivo_csv <- read.table("arquivo.csv", header = TRUE, sep = ",",
+                                colClasses = c("NULL", "character", "NULL",
+                                               "numeric", "numeric"))
+
+head(input_arquivo_csv) #imprime as 6 primeiras linhas
+
+#IMPORTANDO ARQUIVOS EXCEL (.xlsx)
+install.packages("readxl")
+library(readxl)
+input_xlsx <- readxl::read_xlsx("Connect .xlsx")
+dir()
+
