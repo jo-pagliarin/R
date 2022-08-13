@@ -376,4 +376,4 @@ dim(brca2) #569 linhas e 7 colunas
 dim(novaamostra) #570 linhas e 7 colunas #foi criada uma novo dataframe
 View(novaamostra) #a linha recém criada aparece em primeiro lugar
 
-#Ordenando linhas
+#Ordenando linhas de um data frame
