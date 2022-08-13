@@ -305,6 +305,76 @@ export(numeros, file = "teste.xlsx", which = "NOVA")
 #a aba "NOVA" será criada
 #não dá certo exportar dados para uma aba existente
 
+#Manipulando dados com pacotes básicos
+download.file(
+  url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/wdbc.data',
+      destfile = "wbdc.data")
+brca <- read.table(file = "wbdc.data", sep = ',')
+colnames(brca)
+View(brca)
+colnames(brca)[2] <- "COLUNA2"#mudar o nome da coluna 2
+colnames(brca)
+#mudar o nome de várias colunas
+colnames(brca) <- c('id_number', 'diagnosis', 'radius_mean', 'texture_mean') #pega da 1 até 4col
+colnames(brca)[5:7] <- c("symmetry_mean", "area_mean", "perimeter_mean")
+View(brca)
+head(brca)
+View(brca)
+class(brca)
+summary(brca)
+#somente a coluna 'diagnosis' apresenta caracteres e não numeros inteiros; podemos muda-la
+#para fatores; B para amostras benignas e M para malignas
+summary(brca$diagnosis)
+brca$diagnosis <- as.factor(brca$diagnosis) #agora o programa apresenta o numero de amostras
+#benignas e malignas; já muda automticamente para B e para M
+
+#Acessando e manipulando dados
+#visualizando as 2,3,4 colunas e todas as linhas dessas colunas
+brca[,c(2,3,4)]
+#visualizando as linhas 2,4,6 das colunas 2,3,4
+brca[c(2,4,6),c(2,3,4)]
+#visualizando as colunas diagnosis, radius_mean e texture_mean para as linhas 2,4,6
+brca[c(2,4,6), c("diagnosis", "radius_mean", "texture_mean")]
+#excluir primeira coluna
+brca[,-1]
+#criando novo data frame para as colunas de interesse
+brca2 <- brca[,c("diagnosis", "radius_mean", "texture_mean",
+                 "symmetry_mean", "area_mean", "perimeter_mean" )]
+View(brca2)
+#adicionar nona coluna com a razão do perímetro pelo raio dos nódulos
+brca2$perimeter.radius <- brca2$perimeter_mean/brca2$radius_mean
+
+#Filtrando informações
+#Filtrando apenas amostras benignas
+benign <- brca[brca$diagnosis == "B",] #pega todas as linhas cujo valor é B
+summary(benign) #mostra 357 amostras
+summary(brca$diagnosis) #mostra 569 amostras
+malign <- brca[brca$diagnosis != "B", ]
+summary(malign) #mostra 212 amostras
+#Filtrando tumores com raio maior que 16
+radiusM16 <- brca[brca$radius_mean > 16,]
+summary(radiusM16) #141 diagnósticos
+radiusm16 <- brca[brca$radius_mean < 16,]
+summary(radiusm16) #mostra 428
+radius16 <- brca[brca$radius_mean == 16,]
+summary(radius16) #mostra 0
+
+#Adicionando condições
+#filtrar apenas amostras com raio maior que 16 e benignas
+radiusM16B <- brca[brca$radius_mean > 16 & brca$diagnosis == "B",]
+summary(radiusM16B) #mostra 6 casos
+# condição OU usa |
+
+
+#Adicionando linhas: rbind
+View(brca2) 
+dim(brca2) #569 linhas e 7 colunas 
+           #nova linha de brca2 terá de ter 7 variáveis 
+novaamostra <- rbind(c("M", 17, 10, 120, 1000, 0.2, 0.0117), brca2)
+summary(novaamostra)
+dim(brca2) #569 linhas e 7 colunas 
+dim(novaamostra) #570 linhas e 7 colunas #foi criada uma novo dataframe
+View(novaamostra) #a linha recém criada aparece em primeiro lugar
 
 
 
