@@ -420,3 +420,116 @@ NovaTabela$V7 <- brca$V8 #Isso substitui os dados da coluna 7 da nova tabela pel
 NovaTabela2 <- cbind(NovaTabela, V7 = brca$V7)
 View(NovaTabela2)
 #Mesmo processo feito em NovaTabela, a diferença é q mudamos o nome de brca$V7 para V7
+
+#lembrar de remover os objetos que não estarão mais em uso com a função rm()
+
+#MANIPULAÇÃO DE DADOS COM TIDYVERSE
+#pacotes: dplyr e tidyr #código limpo e legível
+install.packages("tidyr")
+library(tidyr)
+
+#FILTRAR OBSERVAÇÕES (dentro do pacote dplyr tem a função filter, que também está presente no pacote stats)
+
+#Criando bando de dados
+alunos <- data.frame(
+  nome = c("Jean", "Dan", "Pepe", "Bruna", "Rafaela"),
+  altura = c(1.74, 1.7, 1.73, 1.65, 1.68),
+  massa = c(69, 66, NA, 55, 53),
+  sexo = c("masculino", "masculino", "masculino", "feminino", "feminino")
+)
+alunos
+View(alunos)
+
+#Filtrar dados = dplyr
+filter(alunos, altura >= 1.7)
+dplyr::filter(alunos, altura >= 1.7) #assim temos certeza q estamos carregando a função certa 
+
+
+#SELECIONANDO VARIÁVEIS (função select() dentro do pacote dplyr)
+select(alunos, nome, sexo, massa)
+select(alunos, ends_with("a")) #retorna as colunas alturA e massA
+
+#MODIFICAÇÃO DE DADOS
+alunos_2 <- mutate(alunos, imc = (massa/altura^2)) #incluiu coluna imc na tabela alunis
+View(alunos_2)
+#tabela alunos_2 é igual a tabela alunos
+
+#RENOMEANDO VARIÁVEIS
+#função rename() do pacote dplyr
+alunos <- rename(alunos,
+      altura.m = altura,
+      massa.kg = massa)
+                 
+#USO DE PIPES (%>%)
+#OPERAÇÕES MÚLTIPLAS EM SEQUÊNCIA
+#PACOTE MAGRITTR #simplifica o código
+install.packages("magrittr")
+library(magrittr)
+
+#Sem pipes
+select(filter(alunos_2, imc >= 22), nome, massa)
+
+#Com pipes
+alunos_2 %>%
+  filter(imc>= 22) %>%
+  select(nome,massa,imc) 
+
+#media, desvio padrao e qntdd das massas separando por sexo
+alunos %>%
+  group_by(sexo) %>%
+  summarise(media = mean(massa.kg, na.rm = T),
+            sd.massa = sd(massa.kg, na.rm = T), 
+            total.massa = n())
+
+# na.rm = T permite cálculos mesmo que haja dados faltantes; caso contrário, o valor dos campos será NA
+
+#ORDENANDO DADOS
+#função arrange() do pacote dplyr
+#ordena de forma descrescente a massa dos alunos
+
+alunos %>%
+  arrange(desc(massa.kg))
+
+#para ordenar de forma crescente, só tirar o desc
+
+#agrupando por sexo e ordenando pela massa
+
+rm(alunos_2)
+
+alunos_2 <- data.frame(
+  nome = c("Jean", "Dan", "Pepe", "Bruna", "Rafaela"),
+  altura = c(1.74, 1.7, 1.73, 1.8, 1.68),
+  massa = c(69, 66, NA, 80, 53),
+  sexo = c("masculino", "masculino", "masculino", "feminino", "feminino")
+)
+alunos_2
+#sequencia original das massas: 69M, 66M, NA, 80F, 53F
+
+alunos_2 %>%
+  group_by(sexo) %>%
+  arrange(massa, .by_group = T)
+
+#ordena massas de forma crescente de acordo com o sexo, começando pelo feminino
+#saída: 53F, 80F, 66M, 69M, NA
+
+alunos_2 %>%
+  group_by(sexo) %>%
+  arrange(massa, .by_group = F)
+#ordena massas de forma crescente misturado sexos
+#saída: 53F, 66M, 69M, 80F, NA
+
+alunos_2 %>%
+  arrange(massa)
+#retorna a mesma coisa que o código anterior
+#nao faz sentido usar o código anterior
+
+
+#COMBINANDO VARIÁVEIS (combinando colunas)
+#função bind_cols(), pacote dplyr
+#criando conjunto de dados para combinar
+complemento <- data.frame(
+  tipo.sang = c("A+", "A+", "B-", "B+", "B-")
+)
+complemento
+
+bind_cols(alunos,complemento)
