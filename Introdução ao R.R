@@ -377,3 +377,25 @@ dim(novaamostra) #570 linhas e 7 colunas #foi criada uma novo dataframe
 View(novaamostra) #a linha recém criada aparece em primeiro lugar
 
 #Ordenando linhas de um data frame
+data("BOD")
+dados <- BOD
+rm(BOD)
+View(dados)
+
+#Ordenou coluna "demand" em ordem crescente
+dados <- dados[order(dados$demand),]
+dados <- dados[order(dados$demand, decreasing = F),]
+
+#Ordenou coluna "demand" em ordem decrescente
+dados <- dados[order(dados$demand, decreasing = T),]
+
+#Testando ordenação com pacotes
+getwd()
+setwd("/Users/Joana/Desktop/RStudio") #lembrar de mudar a direção da barra
+download.file(
+  url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/wdbc.data',
+  destfile = "wbdc.data")
+brca <- read.table(file = "wbdc.data", sep = ',')
+View(brca)
+brca <- brca[order(brca$V1),]
+brca <- brca[order(brca$V1, decreasing = T),]
