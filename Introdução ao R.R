@@ -399,3 +399,24 @@ brca <- read.table(file = "wbdc.data", sep = ',')
 View(brca)
 brca <- brca[order(brca$V1),]
 brca <- brca[order(brca$V1, decreasing = T),]
+
+# Juntando colunas
+View(brca)
+dim(brca) #apresenta dimensões = 569 linhas e 32 colunas
+# Criando novo dama frame com as 3 primeiras colunas
+SegundaTabela <- brca[,1:3]
+View(SegundaTabela)
+dim(SegundaTabela) #569 linhas e 3 colunas
+TerceiraTabela <- brca[,4:6]
+#Unindo tabelas
+TabelaUnida <- cbind(SegundaTabela,TerceiraTabela)
+View(TabelaUnida)
+#Adicionando uma coluna de brca em uma nova tabela
+NovaTabela <- cbind(TabelaUnida, brca$V7) #recebe todas as colunas de TabelaUnida (V1 a V6) + a V7 da brca
+View(NovaTabela)
+NovaTabela$V7 <- brca$V8 #Isso substitui os dados da coluna 7 da nova tabela pelos dados da coluna 8 da tabela brca, mas não deleta a coluna 7
+#deletar a coluna 7 da NovaTabela não é o ideal, melhor criar outro data frame com as colunas de interesse
+#ao tentar excluir a coluna 7, o R cria uma nova coluna com o nome brca com os mesmos dados
+NovaTabela2 <- cbind(NovaTabela, V7 = brca$V7)
+View(NovaTabela2)
+#Mesmo processo feito em NovaTabela, a diferença é q mudamos o nome de brca$V7 para V7
