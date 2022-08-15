@@ -533,3 +533,78 @@ complemento <- data.frame(
 complemento
 
 bind_cols(alunos,complemento)
+
+#JOINS
+##INNER JOIN
+
+id.empregado <- 1:11
+nome.empregado <- c('Renato', 'Miguel', 'Paulo', 'Patrícia', 'Inês', 'Saulo', 'Diego', 'Maria', 'Jose', 'Julia', 'Tiago')
+idade <- c(30, 31, 29, 30, 25, 30, 30, 35, 24, 31, 29)
+uf <- c('MG', 'DF', 'CE', 'DF', 'DF', 'DF', 'RJ', 'SP', 'RS', 'SC', 'BA')
+id.cargo <- c(4, 4, 4, 4, 5, 4, 6, 3, 1, 2, 8)
+(empregados <- data.frame(id.empregado, nome.empregado, idade, uf, id.cargo))
+
+id.cargo <- 1:7
+nome.cargo <- c('Técnico', 'Assistente', 'Consultor', 'Analista', 'Auditor', 'Gerente', 'Gestor')
+salario <- c(7000, 4000, 15000, 11000, 10000, 13000, 20000)
+(cargos <- data.frame(id.cargo, nome.cargo, salario))
+
+#INNER JOIN.
+#Esse tipo de join cria um data frame com todos os campos de ambos conjuntos, 
+#mas retornando somente as ocorrências (linhas) que possuem chaves iguais. 
+#Nossa chave é o campo id.cargo.
+#Empregado correspondente a id.cargo =  ficará de fora 
+
+(merge.r.base <- merge(empregados, cargos)) # inner join com R Base #ordena id.cargo
+#isso retornará uma tabela com 10 linhas (1 empregado a menos: o id.cargo = 8)
+#junta as duas tabelas de forma correspondente
+
+
+(join.dplyr <- inner_join(empregados, cargos)) # inner join com Dplyr #ordena id.empregado
+
+## Vamos supor que os campos chave tivessem nomes diferentes (o que é bem comum!). 
+# Para simular, trocaremos o nome id.cargo em cargos:
+
+names(cargos) <- c("cargo", "nome.cargo", "salario") 
+(merge.r.base <- merge(empregados, cargos, by.x = "id.cargo", by.y = "cargo")) 
+# inner join com R Base, com nomes de chaves diferentes
+#No R base usamos by.x e by.y para especificar o nome do campo chave do primeiro
+#e segundo data.frame. 
+
+(join.dplyr <- inner_join(empregados, cargos, by = c("id.cargo" = "cargo"))) 
+# inner join com Dplyr com nomes de chaves diferentes
+#No inner_join() do dplyr usamos um vetor no 
+#formato c("chave.x" = "chave.y").
+
+########################
+#Inclundo todos os empregados
+
+id.empregado <- 1:11
+nome.empregado <- c('Renato', 'Miguel', 'Paulo', 'Patrícia', 'Inês', 'Saulo', 'Diego', 'Maria', 'Jose', 'Julia', 'Tiago')
+idade <- c(30, 31, 29, 30, 25, 30, 30, 35, 24, 31, 29)
+uf <- c('MG', 'DF', 'CE', 'DF', 'DF', 'DF', 'RJ', 'SP', 'RS', 'SC', 'BA')
+id.cargo <- c(4, 4, 7, 4, 5, 4, 6, 3, 1, 2, 8)
+(empregados <- data.frame(id.empregado, nome.empregado, idade, uf, id.cargo))
+
+id.cargo <- 1:8
+nome.cargo <- c('Técnico', 'Assistente', 'Consultor', 'Analista', 'Auditor', 'Gerente', 'Gestor', 'Analista')
+salario <- c(7000, 4000, 15000, 11000, 10000, 13000, 20000, 8000)
+(cargos <- data.frame(id.cargo, nome.cargo, salario))
+
+names(cargos) <- c("cargo", "nome.cargo", "salario") 
+(merge.r.base <- merge(empregados, cargos)]
+(join.dplyr <- inner_join(empregados, cargos, by = c("id.cargo" = "cargo"))) 
+View(join.dplyr)
+Dados <- join.dplyr
+View(Dados)
+
+MediaSalarialUF <- Dados %>%
+  group_by(uf) %>%
+  summarise(media_salarial = mean(salario))
+
+View(MediaSalarialUF)
+
+MediaSalarialUF <- MediaSalarialUF %>%
+  arrange(desc(media_salarial))
+
+ 
