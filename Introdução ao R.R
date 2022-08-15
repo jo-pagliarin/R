@@ -607,4 +607,35 @@ View(MediaSalarialUF)
 MediaSalarialUF <- MediaSalarialUF %>%
   arrange(desc(media_salarial))
 
+##OUTER JOIN => usado para incluir dados mesmo que as chaves não coincidam 
+##full join
+##left join
+#right join
+
+id.paciente <- 1:9
+nome.abreviado <- c("A.A.M", "S.S.G.F", "T.I.A", "L.O.S.M", "Y.Q.W", "F.A", "T.B.N", "J.J.L", "M.S.S")
+exame.a <- c(3.8, 3.8, 3.9, 4.0, 4.4, 3.8, 3.7, 3.6, 4.0)
+exame.b <- c(109.98, 109.90, 109.89, 109.99, 110.01, 109.95, 109.98, 109.93, 110.00)
+exame.c <- c(0, 1, 1, 0, 1, 1, 0, 0, 1)
+pacientes <- data.frame(id.paciente, nome.abreviado, exame.a, exame.b, exame.c)
+pacientes #pessoas hospitalizadas
+
+id.paciente <- c(1, 4, 5, 7, 8, 11, 15, 25)
+tipo.remedio <- c("A", "B", "A", "B", "A", "A", "B", "B")
+controle <- data.frame(id.paciente, tipo.remedio)
+controle #pessoas que passaram por um ensaio clínico tomando um certo remedio
+
+#avaliar impacto do remedio nos exames das pessoas hospitalizadas (1:9)
+#ignorar pessoas nao hospitalizadas (ou seja, id.paciente > 9)
+
+#USA-SE LEFT JOIN 
+# left join: Retorna todos os registros da tabela esquerda (pacientes) 
+# e os registros correspondentes da tabela direita (remedio).
+
+(left.join.dplyr <- left_join(pacientes, controle)) # left join com dplyr
+
+
+#DÁ PARA USAR RIGHT JOIN APENAS INVERTENDO A SEQUÊNCIA
+(right.join.dplyr <- right_join(controle, pacientes)) # left join com dplyr
+
  
