@@ -638,4 +638,22 @@ controle #pessoas que passaram por um ensaio clínico tomando um certo remedio
 #DÁ PARA USAR RIGHT JOIN APENAS INVERTENDO A SEQUÊNCIA
 (right.join.dplyr <- right_join(controle, pacientes)) # left join com dplyr
 
+ rm(list = ls()) ##REMOVE TODOS OS OBJETOS
+ls() # RETORNA character(0)
+
+#FULL JOIN 
+produto <- c("A", "C", "D", "H", "I", "J", "K", "O", "Y")
+valor <- c(993801, 1829300, 833952, 775831, 59143, 1192920, 6938018, 2927318, 393178)
+(exportacoes <- data.frame(produto, valor))
+exportacoes
+
+produto <- c("B", "C", "D", "E", "F", "H", "I", "J", "M", "N", "O", "Z")
+valor <- c(983125, 71983, 61328, 51939, 10928810, 979192, 6019278, 352918, 178263, 64129229, 447009, 1620129)
+(importacoes <- data.frame(produto, valor))
+importacoes
+
+#a chave vai ser o produto
+(full.join.dplyr <- full_join(exportacoes, importacoes, by = c("produto" = "produto"))) 
+# left join com dplyr
+
  
